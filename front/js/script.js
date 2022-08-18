@@ -1,4 +1,4 @@
-fetch('http://localhost:3000/products')
+fetch('http://localhost:3000')
     .then(function(response){
     return response.json()
     })
@@ -10,3 +10,4 @@ fetch('http://localhost:3000/products')
         console.log('erreur : ' + erreur)
        });
     
+       
