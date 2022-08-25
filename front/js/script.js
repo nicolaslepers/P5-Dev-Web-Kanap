@@ -26,20 +26,26 @@ fetch(url)
 
       // creation de l'image et integration des attributs img et alt 
       let image = document.createElement("img");
-      article.appendChild(image);
       image.setAttribute("src",produits[i].imageUrl);
       image.setAttribute("alt",produits[i].altTxt)
-
+      article.appendChild(image);
       let items = document.getElementById("items");
-      items.appendChild(card);
+      // items.appendChild(card);
 
       // creation de la descritpion
       let paragraph = document.createElement("p");
       paragraph.classList.add("productDescription");
       paragraph.innerHTML = (produits[i].description);
       article.appendChild(paragraph);
-    }
-  })
+
+      /********************Page Produit********************/
+
+      // integration de la descritpion
+      let itemimg = document.getElementsByClassName("item__img")
+      itemimg.setAttribute("src",produits[i].imageUrl);
+      itemimg.setAttribute("alt",produits[i].altTxt)
+      console.log(itemimg)
+  }})
   .catch(function (erreur) {
     console.log("erreur : " + erreur);
   });
