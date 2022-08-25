@@ -18,11 +18,10 @@ fetch(url)
       card.appendChild(article);
 
       // // creation du titre
-      document.querySelector('h3').classList.add('productName')
-      let title = document.createElement("h3")
-      let name = document.querySelector('.productName')
-      name.innerHTML = (produits[i].name)
-      article.appendChild(title)
+      let title = document.createElement("h3");
+      title.classList.add("productName");
+      title.innerHTML = (produits[i].name);
+      article.appendChild(title);
       
 
       // creation de l'image et integration des attributs img et alt 
@@ -35,13 +34,10 @@ fetch(url)
       items.appendChild(card);
 
       // creation de la descritpion
-      let paragraph = document.createElement("p")
-      article.appendChild(paragraph)
-      document.querySelector('p').classList.add('productDescription')
-      let description = document.querySelector('.productDescription')
-      description.innerHTML = (produits[i].description)
-      // console.log(description)
-
+      let paragraph = document.createElement("p");
+      paragraph.classList.add("productDescription");
+      paragraph.innerHTML = (produits[i].description);
+      article.appendChild(paragraph);
     }
   })
   .catch(function (erreur) {
