@@ -24,8 +24,22 @@ fetch(`${sUrl}/${idProduct}`)
     image.setAttribute("alt",produits.altTxt)
     console.log(image);
 
+    let title = document.querySelector('#title')
+    title.innerHTML = (produits.name)
+    let price = document.querySelector('#price')
+    price.innerHTML = (produits.price)
+    let desc = document.querySelector('#description')
+    desc.innerHTML = (produits.description)
 
 
 
+    
+    // let selector = document.getElementById('selector') 
+    // for(let i = 0; i < colors.length; i++){
+    // option.appendChild(selector);
+    // option.classList.add("value");
+    // color.innerHTML = (produits.color[i])
+    // let color = document.getElementById('#colors')
+    
   })
   
