@@ -30,16 +30,34 @@ fetch(`${sUrl}/${idProduct}`)
     price.innerHTML = (produits.price)
     let desc = document.querySelector('#description')
     desc.innerHTML = (produits.description)
+ 
 
+    let defaultSelection = document.createElement("option")
+    defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
+    let colors = document.querySelector('#colors')
+    colors.appendChild(defaultSelection);
 
-
-    
-    // let selector = document.getElementById('selector') 
-    // for(let i = 0; i < colors.length; i++){
-    // option.appendChild(selector);
-    // option.classList.add("value");
-    // color.innerHTML = (produits.color[i])
-    // let color = document.getElementById('#colors')
-    
-  })
+        for(let i = 0; i<colors.length; i++)
+        {
+          let multiColors = document.querySelector('option')
+          let value = document.querySelector('option')
+          value.setAttribute("value", produits.colors[i]);
+          console.log(multiColors);
+          multiColors.innerHTML = (produits.colors[i])
+       
+  }})
   
+
+      // console.log(defaultSelection);
+
+
+
+
+      /*************Option boucle couleur n*1 */
+       // let multiColors = document.createElement('options')
+        // console.log(multiColors);
+        // let colors = documentquerySelector('#colors')
+        // multiColors.appendChild(colors);
+        // multiColors.setAttribute("value", produits.colors[i]);
+        // multiColors.innerHTML = (produits.colors[i])
+        // color.innerHTML = (produits.colors[i])
