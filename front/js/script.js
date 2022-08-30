@@ -22,7 +22,6 @@ fetch(url)
       title.classList.add("productName");
       title.innerHTML = (produits[i].name);
       article.appendChild(title);
-      
 
       // creation de l'image et integration des attributs img et alt 
       let image = document.createElement("img");

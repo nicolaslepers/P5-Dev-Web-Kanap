@@ -31,13 +31,13 @@ fetch(`${sUrl}/${idProduct}`)
     let colors = document.querySelector('#colors')
     colors.appendChild(defaultSelection);
 
-        for(let i = 0; i<colors.length; i++)
+        for(let i = 0; i<produits.colors.length; i++)
         {
           let multiColors = document.createElement('option')
           multiColors.setAttribute("value", produits.colors[i]);
           multiColors.innerHTML = (produits.colors[i])
+          colors.appendChild(multiColors);
           console.log(multiColors);
-
         }})
       // console.log(defaultSelection);
       //document.createElement("option"produits.colors[i])
