@@ -34,11 +34,10 @@ fetch(`${sUrl}/${idProduct}`)
         for(let i = 0; i<colors.length; i++)
         {
           let multiColors = document.createElement('option')
-          let value = document.querySelector('option')
-          value.setAttribute("value", produits.colors[i]);
+          multiColors.setAttribute("value", produits.colors[i]);
           multiColors.innerHTML = (produits.colors[i])
           console.log(multiColors);
+
         }})
       // console.log(defaultSelection);
-
       //document.createElement("option"produits.colors[i])
