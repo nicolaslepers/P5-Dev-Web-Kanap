@@ -8,8 +8,16 @@ fetch(url)
     let produits = data;
     console.log(produits);
     for (let i = 0; i < produits.length; i++) {
-      
-      // Creation card Produit dans html
+      document.querySelector(
+        "#items"
+      ).innerHTML += `<a href="./product.html?id=${id}">
+      <article>
+        <img src="${produits[i].imageUrl}" alt="${produits[i].altTxt}">
+        <h3 class="productName">${produits[i].name}</h3>
+        <p class="productDescription"${produits[i].description}</p>
+      </article>
+    </a>`;
+      /*   // Creation card Produit dans html                                       shift alt a 
       let card = document.createElement("a");
       let id = produits[i]._id;
       card.setAttribute("href", `./product.html?id=${id}`);
@@ -36,7 +44,7 @@ fetch(url)
       let paragraph = document.createElement("p");
       paragraph.classList.add("productDescription");
       paragraph.innerHTML = (produits[i].description);
-      article.appendChild(paragraph);
+      article.appendChild(paragraph); */
     }
   })
   .catch(function (erreur) {
