@@ -1,3 +1,5 @@
+//import
+import {apiRecup} from './script.js';
 // Recuperation de l'id depuis l'url
 let str = window.location //tu regardes dans la barre de nav 
 let url = new URL(str)

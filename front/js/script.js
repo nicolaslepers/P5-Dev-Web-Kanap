@@ -1,23 +1,41 @@
+// fonction recuperation data API
+export {apirecup};
+
+function apiRecup(urlApi) {
+  return fetch(urlApi).then(function (response) {
+    return response.json();
+  });
+}
+//fonction affichage
+function affchProd(dataProduits) {
+  console.log(dataProduits);
+  for (let i = 0; i < dataProduits.length; i++) {
+    let actuProduit = dataProduits[i];
+    document.querySelector(
+      "#items"
+    ).innerHTML += `<a href="./product.html?id=${actuProduit._id}">
+    <article>
+      <img src="${actuProduit.imageUrl}" alt="${actuProduit.altTxt}">
+      <h3 class="productName">${actuProduit.name}</h3>
+      <p class="productDescription">${actuProduit.description}</p>
+    </article>
+  </a>`;
+  }
+}
+
+//execution
+
 let url = " http://localhost:3000/api/products";
 
-fetch(url)
-  .then(function (response) {
-    return response.json();
-  })
+apiRecup(url)
   .then(function (data) {
-    let produits = data;
-    console.log(produits);
-    for (let i = 0; i < produits.length; i++) {
-      document.querySelector(
-        "#items"
-      ).innerHTML += `<a href="./product.html?id=${id}">
-      <article>
-        <img src="${produits[i].imageUrl}" alt="${produits[i].altTxt}">
-        <h3 class="productName">${produits[i].name}</h3>
-        <p class="productDescription"${produits[i].description}</p>
-      </article>
-    </a>`;
-      /*   // Creation card Produit dans html                                       shift alt a 
+    affchProd(data);
+  })
+  .catch(function (erreur) {
+    console.log("erreur : " + erreur);
+  });
+
+/*   // Creation card Produit dans html                                       shift alt a 
       let card = document.createElement("a");
       let id = produits[i]._id;
       card.setAttribute("href", `./product.html?id=${id}`);
@@ -45,8 +63,3 @@ fetch(url)
       paragraph.classList.add("productDescription");
       paragraph.innerHTML = (produits[i].description);
       article.appendChild(paragraph); */
-    }
-  })
-  .catch(function (erreur) {
-    console.log("erreur : " + erreur);
-  });
