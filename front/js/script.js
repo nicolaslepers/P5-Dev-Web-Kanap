@@ -1,5 +1,5 @@
 // fonction recuperation data API
-export {apirecup};
+// export {apirecup};
 
 function apiRecup(urlApi) {
   return fetch(urlApi).then(function (response) {
