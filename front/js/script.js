@@ -2,7 +2,8 @@
 // export {apirecup};
 
 function apiRecup(urlApi) {
-  return fetch(urlApi).then(function (response) {
+  return fetch(urlApi)
+  .then(function (response) {
     return response.json();
   });
 }
