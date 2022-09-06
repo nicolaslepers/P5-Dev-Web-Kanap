@@ -6,7 +6,10 @@ let url = new URL(str)
 let idProduct = url.searchParams.get('id') //et cherche les paramettres qu tu mets dans une variable
 //console.log(idProduct);doit correspondre à l'id du produit
 
-//les fonctions
+//LES FONCTIONS
+
+//Fonction recup back
+
 // function apiRecup2(`${sUrl}/${idProduct}`) 
 //   return fetch(`${sUrl}/${idProduct}`)
 // .then(function (response) {
@@ -14,22 +17,14 @@ let idProduct = url.searchParams.get('id') //et cherche les paramettres qu tu me
 //   });
 
 
-//fonction reponse
-
-// fetch(`${sUrl}/${idProduct}`)
-//   .then(function (response) {
-//     return response.json();
-//   })
-
 
 //fonction changement
-
-// function displayProduct ()
+// function displayProduct (){
 //   // MEP de l'affichage et de la boucle
 // let img = document.createElement("img"); 
 // let image = document.querySelector('.item__img').appendChild(img);
 // image.setAttribute("src",produits.imageUrl);
-// image.setAttribute("alt",produits.altTxt)
+// image.setAttribute("alt",produits.altTxt);
 
 // let title = document.querySelector('#title')
 // title.innerHTML = (produits.name)
@@ -41,22 +36,22 @@ let idProduct = url.searchParams.get('id') //et cherche les paramettres qu tu me
 // let defaultSelection = document.createElement("option")
 // defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
 // let colors = document.querySelector('#colors')
-// colors.appendChild(defaultSelection);
+// colors.appendChild(defaultSelection)};
 
 
 //fonction boucle option
+// let produits = data;
+function loop (produits){
+for(let i = 0; i<produits.colors.length; i++)
+        { 
+          let multiColors = document.createElement('option')
+          multiColors.setAttribute("value", produits.colors[i]);
+          multiColors.innerHTML = (produits.colors[i])
+          colors.appendChild(multiColors);
+          console.log(multiColors);
+        }}
 
-// function loop ()
-// for(let i = 0; i<produits.colors.length; i++)
-//         {
-//           let multiColors = document.createElement('option')
-//           multiColors.setAttribute("value", produits.colors[i]);
-//           multiColors.innerHTML = (produits.colors[i])
-//           colors.appendChild(multiColors);
-//           console.log(multiColors);
-//         }
-
-//Fonction panier 
+//Fonction Panier 
 //function basket()
 // <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
 //           <div class="cart__item__img">
@@ -80,22 +75,22 @@ let idProduct = url.searchParams.get('id') //et cherche les paramettres qu tu me
 //           </div>
 //         </article>
 
-let sUrl = " http://localhost:3000/api/products";
 
+
+let sUrl = " http://localhost:3000/api/products";
 fetch(`${sUrl}/${idProduct}`)
   .then(function (response) {
     return response.json();
   })
   .then(function (data) {
     let produits = data;
-    console.log(data);
+   console.log(data);
     
     // MEP de l'affichage et de la boucle
     let img = document.createElement("img"); 
     let image = document.querySelector('.item__img').appendChild(img);
     image.setAttribute("src",produits.imageUrl);
     image.setAttribute("alt",produits.altTxt)
-
     let title = document.querySelector('#title')
     title.innerHTML = (produits.name)
     let price = document.querySelector('#price')
@@ -107,15 +102,29 @@ fetch(`${sUrl}/${idProduct}`)
     defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
     let colors = document.querySelector('#colors')
     colors.appendChild(defaultSelection);
- 
-        for(let i = 0; i<produits.colors.length; i++)
-        {
-          let multiColors = document.createElement('option')
-          multiColors.setAttribute("value", produits.colors[i]);
-          multiColors.innerHTML = (produits.colors[i])
-          colors.appendChild(multiColors);
-          console.log(multiColors);
-        }})
+
+
+        loop(produits)
+
+        // for(let i = 0; i<produits.colors.length; i++)
+        // {
+        //   let multiColors = document.createElement('option')
+        //   multiColors.setAttribute("value", produits.colors[i]);
+        //   multiColors.innerHTML = (produits.colors[i])
+        //   colors.appendChild(multiColors);
+        //   console.log(multiColors);
+        }
+  )
+
+  .catch(function (erreur) {
+    console.log("erreur : " + erreur);
+  });
+
+
+
+
+
+  
       // console.log(defaultSelection);
       //document.createElement("option"produits.colors[i])
 
