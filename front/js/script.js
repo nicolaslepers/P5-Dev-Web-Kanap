@@ -1,9 +1,7 @@
 // fonction recuperation data API
-// export {apirecup};
-
+export { apiRecup };
 function apiRecup(urlApi) {
-  return fetch(urlApi)
-  .then(function (response) {
+  return fetch(urlApi).then(function (response) {
     return response.json();
   });
 }
@@ -23,19 +21,21 @@ function affchProd(dataProduits) {
   </a>`;
   }
 }
-
-//execution
-
-let url = " http://localhost:3000/api/products";
-
-apiRecup(url)
-  .then(function (data) {
-    affchProd(data);
-  })
-  .catch(function (erreur) {
-    console.log("erreur : " + erreur);
-  });
-
+ //tu regardes dans la barre de nav 
+let urlPage = new URL(window.location)
+//si le pathname est index alors on execute
+if (urlPage.pathname == '/front/html/index.html') {
+  console.log("bienvenue sur la page d'acceuil");
+  let url = " http://localhost:3000/api/products";
+  apiRecup(url)
+    .then(function (data) {
+      affchProd(data);
+    })
+    .catch(function (erreur) {
+      console.log("erreur : " + erreur);
+      console.error(erreur)
+    });
+}
 /*   // Creation card Produit dans html                                       shift alt a 
       let card = document.createElement("a");
       let id = produits[i]._id;

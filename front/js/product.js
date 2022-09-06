@@ -1,5 +1,6 @@
-//import
-// import {apiRecup} from './script.js';
+import {apiRecup} from './script.js';//on oublie pas de mettre le module pares le src => src="../js/product.js" type="module"
+
+
 // Recuperation de l'id depuis l'url
 let str = window.location //tu regardes dans la barre de nav 
 let url = new URL(str)
@@ -71,13 +72,12 @@ for(let i = 0; i<produits.colors.length; i++)
 //             </div>
 //           </div>
 //         </article>}
-
-
-
+if(url.pathname == '/front/html/product.html'){
 let sUrl = " http://localhost:3000/api/products";
-fetch(`${sUrl}/${idProduct}`)
-  .then(function (response) {
-    return response.json();})
+// fetch(`${sUrl}/${idProduct}`)
+//   .then(function (response) {
+//     return response.json();})
+apiRecup(`${sUrl}/${idProduct}`)
   .then(function (data) {
     let produits = data;
    console.log(data);
@@ -85,4 +85,4 @@ fetch(`${sUrl}/${idProduct}`)
         loop(produits)})
   .catch(function (erreur) {
     console.log("erreur : " + erreur);
-  });
+  })}
