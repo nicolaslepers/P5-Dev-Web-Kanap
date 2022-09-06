@@ -40,8 +40,16 @@ for(let i = 0; i<produits.colors.length; i++)
           console.log(multiColors);
         }}
 
-//Fonction Panier 
-//function basket()
+//Fonction Panier
+
+
+//monStorage = localStorage
+//function basket(monStorage)
+
+
+//{
+//let click = document.querySelector('addToCart')
+//click.addEventListener('click',monStorage)
 // <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
 //           <div class="cart__item__img">
 //             <img src="../images/product01.jpg" alt="Photographie d'un canapé">
@@ -62,7 +70,7 @@ for(let i = 0; i<produits.colors.length; i++)
 //               </div>
 //             </div>
 //           </div>
-//         </article>
+//         </article>}
 
 
 
