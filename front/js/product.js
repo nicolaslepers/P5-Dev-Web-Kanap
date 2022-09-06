@@ -8,39 +8,28 @@ let idProduct = url.searchParams.get('id') //et cherche les paramettres qu tu me
 
 //LES FONCTIONS
 
-//Fonction recup back
-
-// function apiRecup2(`${sUrl}/${idProduct}`) 
-//   return fetch(`${sUrl}/${idProduct}`)
-// .then(function (response) {
-//     return response.json();
-//   });
-
-
-
 //fonction changement
-// function displayProduct (){
-//   // MEP de l'affichage et de la boucle
-// let img = document.createElement("img"); 
-// let image = document.querySelector('.item__img').appendChild(img);
-// image.setAttribute("src",produits.imageUrl);
-// image.setAttribute("alt",produits.altTxt);
+function displayProduct (produits){
+  // MEP de l'affichage et de la boucle
+let img = document.createElement("img"); 
+let image = document.querySelector('.item__img').appendChild(img);
+image.setAttribute("src",produits.imageUrl);
+image.setAttribute("alt",produits.altTxt);
 
-// let title = document.querySelector('#title')
-// title.innerHTML = (produits.name)
-// let price = document.querySelector('#price')
-// price.innerHTML = (produits.price)
-// let desc = document.querySelector('#description')
-// desc.innerHTML = (produits.description)
+let title = document.querySelector('#title')
+title.innerHTML = (produits.name)
+let price = document.querySelector('#price')
+price.innerHTML = (produits.price)
+let desc = document.querySelector('#description')
+desc.innerHTML = (produits.description)
 
-// let defaultSelection = document.createElement("option")
-// defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
-// let colors = document.querySelector('#colors')
-// colors.appendChild(defaultSelection)};
+let defaultSelection = document.createElement("option")
+defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
+let colors = document.querySelector('#colors')
+colors.appendChild(defaultSelection)};
 
 
 //fonction boucle option
-// let produits = data;
 function loop (produits){
 for(let i = 0; i<produits.colors.length; i++)
         { 
@@ -80,53 +69,12 @@ for(let i = 0; i<produits.colors.length; i++)
 let sUrl = " http://localhost:3000/api/products";
 fetch(`${sUrl}/${idProduct}`)
   .then(function (response) {
-    return response.json();
-  })
+    return response.json();})
   .then(function (data) {
     let produits = data;
    console.log(data);
-    
-    // MEP de l'affichage et de la boucle
-    let img = document.createElement("img"); 
-    let image = document.querySelector('.item__img').appendChild(img);
-    image.setAttribute("src",produits.imageUrl);
-    image.setAttribute("alt",produits.altTxt)
-    let title = document.querySelector('#title')
-    title.innerHTML = (produits.name)
-    let price = document.querySelector('#price')
-    price.innerHTML = (produits.price)
-    let desc = document.querySelector('#description')
-    desc.innerHTML = (produits.description)
- 
-    let defaultSelection = document.createElement("option")
-    defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
-    let colors = document.querySelector('#colors')
-    colors.appendChild(defaultSelection);
-
-
-        loop(produits)
-
-        // for(let i = 0; i<produits.colors.length; i++)
-        // {
-        //   let multiColors = document.createElement('option')
-        //   multiColors.setAttribute("value", produits.colors[i]);
-        //   multiColors.innerHTML = (produits.colors[i])
-        //   colors.appendChild(multiColors);
-        //   console.log(multiColors);
-        }
-  )
-
+    displayProduct (produits)
+        loop(produits)})
   .catch(function (erreur) {
     console.log("erreur : " + erreur);
   });
-
-
-
-
-
-  
-      // console.log(defaultSelection);
-      //document.createElement("option"produits.colors[i])
-
-
-   
