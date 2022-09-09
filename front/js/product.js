@@ -1,4 +1,4 @@
-import {apiRecup} from './script.js';//on oublie pas de mettre le module pares le src => src="../js/product.js" type="module"
+import {apiRecup} from './script.js';//on oublie pas de mettre le module apres le (src => src="../js/product.js" type="module")
 
 
 // Recuperation de l'id depuis l'url
@@ -6,6 +6,8 @@ let str = window.location //tu regardes dans la barre de nav
 let url = new URL(str)
 let idProduct = url.searchParams.get('id') //et cherche les paramettres qu tu mets dans une variable
 //console.log(idProduct);doit correspondre à l'id du produit
+
+
 
 //LES FONCTIONS
 
@@ -29,7 +31,6 @@ defaultSelection.innerHTML = ('--SVP, choisissez une couleur --')
 let colors = document.querySelector('#colors')
 colors.appendChild(defaultSelection)};
 
-
 //fonction boucle option
 function loop (produits){
 for(let i = 0; i<produits.colors.length; i++)
@@ -38,19 +39,55 @@ for(let i = 0; i<produits.colors.length; i++)
           multiColors.setAttribute("value", produits.colors[i]);
           multiColors.innerHTML = (produits.colors[i])
           colors.appendChild(multiColors);
-          console.log(multiColors);
+          console.log('multiColors', multiColors);
         }}
 
-//Fonction Panier
+if(url.pathname == '/front/html/product.html'){
+let sUrl = " http://localhost:3000/api/products";
+apiRecup(`${sUrl}/${idProduct}`)
+  .then(function (data) {
+    let produits = data;
+   console.log('produits', produits);
+
+    //Fonction Panier (basket)
+let click = document.querySelector('#addToCart')
+// //appel  de la fonction addbasket (ajout au panier)
+click.addEventListener('click',function (){
+  console.log('Le clique fonctionne pour la fonction addBasket')
+  addArray(produits)
+ })
+
+ let basketTab = localStorage.getItem("itemBasket") || []
+ console.log(basketTab)
+ function addArray (basketProd){
+  //if (localStorage.getItem("itemBasket")) {
+    console.log("La clé est existante");
+  } 
+  //else {
+    console.log("La clé est inexistante, il faut créer le tableau");
+    let choiseColors = document.querySelector('#colors')[0].value
+    console.log(choiseColors)
+    let basketObj = (idProduct, basketProd.name, basketProd.colors)
+//basketTab.push(basketObj)
+
+    console.log (basketObj)
+  }}
+    displayProduct (produits)
+        loop(produits)})
+  .catch(function (erreur) {
+    console.log("erreur : " + erreur);
+  })}
 
 
-//monStorage = localStorage
-//function basket(monStorage)
 
 
-//{
-//let click = document.querySelector('addToCart')
-//click.addEventListener('click',monStorage)
+
+
+
+   // localStorage.setItem('itemBasket', 'test');
+
+
+
 // <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
 //           <div class="cart__item__img">
 //             <img src="../images/product01.jpg" alt="Photographie d'un canapé">
@@ -72,17 +109,3 @@ for(let i = 0; i<produits.colors.length; i++)
 //             </div>
 //           </div>
 //         </article>}
-if(url.pathname == '/front/html/product.html'){
-let sUrl = " http://localhost:3000/api/products";
-// fetch(`${sUrl}/${idProduct}`)
-//   .then(function (response) {
-//     return response.json();})
-apiRecup(`${sUrl}/${idProduct}`)
-  .then(function (data) {
-    let produits = data;
-   console.log(data);
-    displayProduct (produits)
-        loop(produits)})
-  .catch(function (erreur) {
-    console.log("erreur : " + erreur);
-  })}
