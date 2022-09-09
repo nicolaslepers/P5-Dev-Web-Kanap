@@ -28,18 +28,24 @@ function displayProduct(produits) {
   defaultSelection.innerHTML = "--SVP, choisissez une couleur --";
   let colors = document.querySelector("#colors");
   colors.appendChild(defaultSelection);
+  return colors;
 }
 
 //fonction boucle option
-function loop(produits) {
-  for (let i = 0; i < produits.colors.length; i++) {
-    let multiColors = document.createElement("option");
-    multiColors.setAttribute("value", produits.colors[i]);
-    multiColors.innerHTML = produits.colors[i];
-    colors.appendChild(multiColors);
-    console.log("multiColors", multiColors);
-  }
-}
+// function loop(produits) {
+//   for (let i = 0; i < produits.colors.length; i++) {
+//   for (let color of produits.colors) {}
+//   for (let i in produits.colors) {}
+//     let multiColors = document.createElement("option");
+//     multiColors.setAttribute("value", produits.colors[i]);
+//     multiColors.innerHTML = produits.colors[i];
+//     colors.appendChild(multiColors);
+//     console.log("multiColors", multiColors);
+//   }
+// }
+let basketTab = JSON.parse(localStorage.getItem("itemBasket")) || [];      // fait appel au local storage grace a quetitem et  est a l'exterieur donc utilisable facilement|| [] indique: si JSON.parse(localStorage.getItem("itemBasket")) il n'y a rien de dant alors on met juste []
+      console.log(basketTab);
+
 
 if (url.pathname == "/front/html/product.html") {
   let sUrl = " http://localhost:3000/api/products";
@@ -48,59 +54,73 @@ if (url.pathname == "/front/html/product.html") {
       let produits = data;
       console.log("produits", produits);
 
-      //Fonction Panier (basket)
-      let click = document.querySelector("#addToCart");
-      //appel  de la fonction addbasket (ajout au panier)
-      click.addEventListener("click", function () {
+     
+      let click = document.querySelector("#addToCart");                          //Fonction Panier (basket)
+      click.addEventListener("click", function () {                              //appel  de la fonction addbasket (ajout au panier)
         console.log("Le clique fonctionne pour la fonction addBasket");
         addArray(produits);
       });
-      // fait appel au local storage grace a quetitem
-      let basketTab = JSON.parse(localStorage.getItem("itemBasket")) || [];
-      console.log(basketTab);
+    
+      
 
       function addArray(basketProd) {
-        //attention queryselector bien mais getid meilleur ou different
-        let chosenColor = document.getElementById("colors").value;
-        if (chosenColor == "--SVP, choisissez une couleur --") return;
+        let chosenColor = document.getElementById("colors").value;                //attention queryselector bien mais getid meilleur ou different
+        if (chosenColor == "--SVP, choisissez une couleur --") return;            // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
         console.log("chosenColor", chosenColor);
-        //version declarative
         let basketObj = {
-          id: idProduct,
+          id: idProduct,                                                          //version declarative
           name: basketProd.name,
           color: chosenColor,
         };
         basketTab.push(basketObj);
-        //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
-        localStorage.setItem("itemBasket", JSON.stringify(basketTab));
+        localStorage.setItem("itemBasket", JSON.stringify(basketTab));           //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
         console.log("basketObj", basketObj);
       }
-      displayProduct(produits);
-      loop(produits);
+      const colors = displayProduct(produits);
+      //loop(produits);
+      produits.colors.forEach(function(color) {                                 //foreach better than for(let i = 0; i < produits.colors.length; i++) pour chaque produits.colors on utilise la fonction
+        let multiColors = document.createElement("option");
+        multiColors.setAttribute("value", color);
+        multiColors.innerHTML = color;
+        colors.appendChild(multiColors);
+        console.log("multiColors", multiColors);
+      });
     })
     .catch(function (erreur) {
       console.log("erreur : " + erreur);
     });
 }
 
-// <article class="cart__item" data-id="{product-ID}" data-color="{product-color}">
-//           <div class="cart__item__img">
-//             <img src="../images/product01.jpg" alt="Photographie d'un canapé">
-//           </div>
-//           <div class="cart__item__content">
-//             <div class="cart__item__content__description">
-//               <h2>Nom du produit</h2>
-//               <p>Vert</p>
-//               <p>42,00 €</p>
-//             </div>
-//             <div class="cart__item__content__settings">
-//               <div class="cart__item__content__settings__quantity">
-//                 <p>Qté : </p>
-//                 <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
-//               </div>
-//               <div class="cart__item__content__settings__delete">
-//                 <p class="deleteItem">Supprimer</p>
-//               </div>
-//             </div>
-//           </div>
-//         </article>}
+//Affichage du local storage sur la 
+
+// for(let i = 0; i < basketTab.length; i++) {                                    equivaux à basketTab.forEach(function(basketObj)
+//   let basketObj = basketTab[i];
+
+// }                                                                            
+
+basketTab.forEach(function(basketObj){                                            // pour chaque basketobj dans basketTab on utilise la fonction  ...
+document.getElementById(
+  "cart__items"
+).innerHTML += `<article class="cart__item" data-id="${basketObj.id}" data-color="{product-color}">
+          <div class="cart__item__img">
+            <img src="../images/product01.jpg" alt="Photographie d'un canapé">
+          </div>
+          <div class="cart__item__content">
+            <div class="cart__item__content__description">
+              <h2>${basketObj.name}</h2>
+              <p>${basketObj.color}</p>
+              <p>42,00 €</p>
+            </div>
+            <div class="cart__item__content__settings">
+              <div class="cart__item__content__settings__quantity">
+                <p>Qté : </p>
+                <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="42">
+              </div>
+              <div class="cart__item__content__settings__delete">
+                <p class="deleteItem">Supprimer</p>
+              </div>
+            </div>
+          </div>
+        </article>`;
+}
+)
