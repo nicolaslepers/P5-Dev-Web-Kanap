@@ -15,7 +15,7 @@ apiRecup(`${url2}/${basketObj.id}`)
 
     ).innerHTML += `<article class="cart__item" data-id="${basketObj.id}" data-color="{product-color}">
             <div class="cart__item__img">
-                <img src="${basketObj.imageUrl}" alt="Photographie d'un canapé">
+                <img src="${resteDonnees.imageUrl}" alt="Photographie d'un canapé">
             </div>
             <div class="cart__item__content">
                 <div class="cart__item__content__description">

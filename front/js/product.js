@@ -45,15 +45,14 @@ function addElementBasket() {
   let chosenColor = document.getElementById("colors").value;            //attention queryselector bien mais getid meilleur ou different
   if (chosenColor == "--SVP, choisissez une couleur --") return;        // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
   console.log("chosenColor", chosenColor);
-  let quantity = document.querySelector("#quantity").value;
+
+  let quantity = document.querySelector("#quantity").value;             // Recuperation de la quantité
 
   let basketObj = {
     id: idProduct,                                                       //version declarative
     color: chosenColor,
     quantity,
-    imgUrl: imageUrl
-
-  };
+    };
   basketTab.push(basketObj);
   localStorage.setItem("itemBasket", JSON.stringify(basketTab));         //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
   console.log("basketObj", basketObj);
