@@ -30,6 +30,7 @@ if (urlPage.pathname == '/front/html/index.html') {
   apiRecup(url)
     .then(function (data) {
       affchProd(data);
+      
     })
     .catch(function (erreur) {
       console.log("erreur : " + erreur);
