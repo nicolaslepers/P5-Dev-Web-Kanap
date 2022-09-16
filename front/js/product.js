@@ -5,17 +5,15 @@ let str = window.location;                                            //tu regar
 let url = new URL(str);
 let idProduct = url.searchParams.get("id");                           //et cherche les paramettres qu tu mets dans une variable
 export let basketTab = JSON.parse(localStorage.getItem("itemBasket")) || [];   // fait appel au local storage grace a quetitem et  est a l'exterieur donc utilisable facilement|| [] indique: si JSON.parse(localStorage.getItem("itemBasket")) il n'y a rien de dant alors on met juste []
-console.log(basketTab);
 
-                                                                      //console.log(idProduct);doit correspondre à l'id du produit
 //LES FONCTIONS
 
 //Fonction changement
 function displayProduct(produit) {                                    // MEP de l'affichage et de la boucle
-  let img = document.createElement("img");
-  let image = document.querySelector(".item__img").appendChild(img);
-  image.setAttribute("src", produit.imageUrl);                         //creation et attribution de l'element img avec sont attribut et sa source
-  image.setAttribute("alt", produit.altTxt);
+  let img = document.createElement("img");                            //Creation de l'element img dans le DOM
+  let image = document.querySelector(".item__img").appendChild(img);  //creation de la variable image couplé à la class DOM
+  image.setAttribute("src", produit.imageUrl);                        //creation et attribution de l'element img avec sont attribut et sa source
+  image.setAttribute("alt", produit.altTxt);                          
 
   let title = document.querySelector("#title");                       // recuperation du nom, prix et description du produit
   title.innerHTML = produit.name;
@@ -25,9 +23,9 @@ function displayProduct(produit) {                                    // MEP de 
   desc.innerHTML = produit.description;
 
 //Option de base --SVP, choisissez une couleur --
-  let defaultSelection = document.createElement("option");             
-  defaultSelection.setAttribute("selected", "selected");
-  defaultSelection.innerHTML = "--SVP, choisissez une couleur --";      
+  let defaultSelection = document.createElement("option");             //creation de l'element option dans le DOM
+  defaultSelection.setAttribute("selected", "selected");               //attribution de "selected"
+  defaultSelection.innerHTML = "--SVP, choisissez une couleur --";     // insertion du texte "--SVP, choisissez une couleur --"
   let colors = document.querySelector("#colors");
   colors.appendChild(defaultSelection);
 
@@ -38,14 +36,14 @@ function displayProduct(produit) {                                    // MEP de 
     multiColors.innerText = color;                                      // innterText prends une chaine de caractere et ne se comporte pas comme du html
     colors.appendChild(multiColors);  
   });
- }
+}
 
 function addElementBasket() {     
   let chosenColor = document.getElementById("colors").value;            //attention queryselector bien mais getid meilleur ou different
   if (chosenColor == "--SVP, choisissez une couleur --") return;        // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
   console.log("chosenColor", chosenColor);
 
-  let quantity = parseInt(document.querySelector("#quantity").value);             // Recuperation de la quantité
+  let quantity = parseInt(document.querySelector("#quantity").value);   //Recuperation de la quantité
 
   let basketObj = {
     id: idProduct,                                                       //version declarative
