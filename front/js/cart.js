@@ -44,9 +44,7 @@ basketTab.forEach(function (basketObj) {
         const deleteItem = document.querySelectorAll(".deleteItem")
         deleteItem.forEach((btn) => {
             btn.addEventListener('click', e => {
-                //basketTab = basketTab.filter(basketObj => basketObj.id != e.target.id)      // tu vas 
-                // console.log(basketTab)
-                localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(basketObj => basketObj.id != e.target.id))); 
+                localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(basketObj => basketObj.id != e.target.id)));         //ici on retire un objet 
                 window.location = window.location
             })
         })
