@@ -15,7 +15,7 @@ function afficheBasketObj(basketObj) {                                          
         totalPriceAllProducts += totalCurrentProduct                                                                                // equivalent (raccourcis) ==> totalAllProducts = totalAllProducts + totalCurrentProduct Ajoute le prix total de ce produits au prix total de tout les produits 
         document.getElementById(                                                                                                    // ensuite on incremente les diversesbasket.obj (id, color) dans le code html
             "cart__items"
-        ).innerHTML += `<article class="cart__item" data-id="${basketObj.id}" data-color="{product-color}">
+        ).innerHTML += `<article class="cart__item" data-id="${basketObj.id}" data-color="${basketObj.color}">
             <div class="cart__item__img">
                 <img src="${resteDonnees.imageUrl}" alt="Photographie d'un canapé">
             </div>
@@ -41,10 +41,11 @@ function afficheBasketObj(basketObj) {                                          
         
         // Il recupere tout les elements qui ont pour class "deleteItem"
         const deleteItem = document.querySelectorAll(".deleteItem")
+        console.log(deleteItem)
         deleteItem.forEach((btn) => {                                                                                                   // pour chaque bouton deleteItem on lance la fonction
             btn.addEventListener('click', e => {
                 localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != e.target.color)));         //ici on retire un objet du tableau grace à sont ID
-                location.reload();                                                                                   // ici on refraichit l'image
+                location.reload();                                                                                                      // ici on refraichit l'image
             })
         })
     })
@@ -57,7 +58,13 @@ function afficheBasketObj(basketObj) {                                          
 // Utilisation des Fonctions
 basketTab.forEach(basketObj => afficheBasketObj(basketObj))
 
+document.getElementById("order").classList.add("fu");
+const fuStyle = document.createElement('style');
+fuStyle.innerHTML = `
+    input.fu {
 
+    }
+`;
 
 // let form = document.querySelector('.cart__order__form__question')
 // console.log(form.email)

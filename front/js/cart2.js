@@ -45,7 +45,7 @@ function afficheBasketObj(basketObj) {                                          
         const btn = basketObjHtml.querySelector(".deleteItem")
         btn.addEventListener('click', e => {
             localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != basketObj.color)));         //ici on retire un objet du tableau grace à sont ID
-            location.reload();                                                                                   // ici on refraichit l'image
+            location.reload();                                                                                                           // ici on refraichit l'image
         })
     })
     .catch(function (erreur) {
@@ -58,22 +58,56 @@ function afficheBasketObj(basketObj) {                                          
 
 // Utilisation des Fonctions
 // 100 
-basketTab.forEach(basketObj => afficheBasketObj(basketObj))
-// Il recupere tout les elements qui ont pour class "deleteItem"
+basketTab.forEach(basketObj => afficheBasketObj(basketObj))                                                                             // Il recupere tout les elements qui ont pour class "deleteItem"                                                                                                                     
 const deleteItem = document.querySelectorAll(".deleteItem")
-deleteItem.forEach((btn) => {                                                                                                   // pour chaque bouton deleteItem on lance la fonction
+deleteItem.forEach((btn) => {                                                                                                            // pour chaque bouton deleteItem on lance la fonction
     btn.addEventListener('click', e => {
         localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != basketObj.color)));         //ici on retire un objet du tableau grace à sont ID
-        location.reload();                                                                                   // ici on refraichit l'image
+                                                                                                                                         // (incohérence spec back) la couleur serait partie constituante dun uuid ? pourquoi on ne demande que les id dans le back dans ce cas ????
+        location.reload();                                                                                                               // attention compatibilité avec d'anciennes version de nav// ici on refraichit l'image
     })
 })
 
+
+
+
+// //envoi de data via le btn "commander"
+// let contact = {                                                                                                                      // (bonne pratique) dans l'immediat je n'ai pas l'usage de le mettre dans une variable donc, bonne pratique je ne le fais pas. Quand j'en aurais besoin, je refléchis et là je le mettrais dans une variable. Merci de ne pas donner de mauvaises habitudes ;) 
+//     firstName: document.getElementById("firstName").value,
+//     lastName: document.getElementById("lastName").value,
+//     address: document.getElementById("address").value,
+//     city: document.getElementById("city").value,
+//     email: document.getElementById("email").value
+// }
+
+// console.log(contact)
+
+// let products = basketTab.map(basketObj => basketObj.id)
+
+
+
+fetch("http://localhost:3000/api/order ", {
+    method: "POST",
+    body: JSON.stringify({
+        contact: {
+            firstName: document.getElementById("firstName").value,
+            lastName: document.getElementById("lastName").value,
+            address: document.getElementById("address").value,
+            city: document.getElementById("city").value,
+            email: document.getElementById("email").value
+        },
+        products: basketTab.map(basketObj => basketObj.id )
+    })
+})
 
 // let form = document.querySelector('.cart__order__form__question')
 // console.log(form.email)
 
 // const validEmail = function(inputEmail){
-// let emailRegExp = new RegExp('^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$', 'g');
+
+
+// const reg = /^aze[015]\d\w{2,}$/i;
+// let emailRegExp = /^[\w\.-_]+@[\w.-]+\.[a-z]{2,10}$/i; // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
 
 
 // let testEmail = emailRegExp.test(inputEmail.value);
@@ -97,15 +131,33 @@ deleteItem.forEach((btn) => {                                                   
 
 
 
+
+
+
+
+
+
 //recuperer le error msg pour y mettre le msg uniquement si c'est false
 
 
 
+//ou 
+
+// function checkEmail(email) {
+//     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+//     return re.test(email);
+// }
+// function validate() {
+//     var email = document.getElementById("email").value;
+
+//     if (checkEmail(email)) {
+//         alert('Adresse e-mail valide');
+//     } else {
+//         alert('Adresse e-mail non valide');
+//     }
+//     return false;
+// }
 
 
 
-// ● Récupérer et analyser les données saisies par l’utilisateur dans le
-// formulaire.
-// ● Afficher un message d’erreur si besoin (par exemple lorsqu’un
-// utilisateur renseigne “bonjour” dans le champ “e-mail”).
-// ● Constituer un objet contact (
+

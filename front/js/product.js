@@ -62,7 +62,7 @@ if (url.pathname == "/front/html/product.html") {
     .then(function (produit) {
       let click = document.querySelector("#addToCart");                   //Fonction Panier (basket)
       click.addEventListener("click", function () {                       //appel  de la fonction addbasket (ajout au panier)
-        addElementBasket();                                               //Appel de la fonction addarray qui est en dehors
+        addElementBasket();                                               //Appel de la fonction addarray qui est en dehors => (mauvaise pratique) quel est l'interet d'utiliser de la ressource en créant une fonction qui n'est utilisée qu'une seule fois dans l'integralité du code de l'application ???
       });
         displayProduct(produit);
     })
