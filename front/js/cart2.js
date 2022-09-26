@@ -85,7 +85,9 @@ deleteItem.forEach((btn) => {                                                   
 // let products = basketTab.map(basketObj => basketObj.id)
 
 
-
+let form = document.querySelector('.cart__order__form__question')
+form.addEventListener("click", function () {  
+    console.log("clique ok")            
 fetch("http://localhost:3000/api/order ", {
     method: "POST",
     body: JSON.stringify({
@@ -98,11 +100,15 @@ fetch("http://localhost:3000/api/order ", {
         },
         products: basketTab.map(basketObj => basketObj.id )
     })
-})
+  .then (reponse => reponse.JSON())
+    })
+  })
 
-// let form = document.querySelector('.cart__order__form__question')
-// console.log(form.email)
-
+  .catch(function (erreur) {
+        console.log("erreur : " + erreur);
+        console.error(erreur);
+  })
+  
 // const validEmail = function(inputEmail){
 
 
