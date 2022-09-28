@@ -69,6 +69,94 @@ deleteItem.forEach((btn) => {                                                   
 })
 
 
+///validation mail
+
+const validEmail = function(inputEmail){
+
+    let emailRegExp = /^[\w\.-_]+@[\w.-]+\.[a-z]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
+    let testEmail = emailRegExp.test(inputEmail.value);
+    let small = inputEmail.nextElementSibling;
+
+    if (testEmail) {
+        small.innerHTML = ''
+    }
+    else
+        {small.innerHTML = 'Adresse mail Invalide'
+    }
+    return testEmail
+    }
+    let emailFrom = document.getElementById("email")
+    console.log(emailFrom)
+    emailFrom.addEventListener('change', function(){
+        validEmail(this)
+    });
+    
+// // validation du nom et prenom
+
+// const validName = function(inputName){
+
+//     let NameRegExp = /^[\w\.-_]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
+//     let testName = NameRegExp.test(inputName.value);
+//     let small = inputName.nextElementSibling;
+
+//     if (testName) {
+//         small.innerHTML = ''
+//     }
+//     else
+//         {small.innerHTML = 'Invalide'
+//     }
+//     return testName
+//     }
+//     let NameFrom = document.getElementById("fistName")
+//     console.log(emailFrom)
+//     NameFrom.addEventListener('change', function(){
+//         validName(this)
+//     });
+
+
+// //validation de la ville
+
+// const validCity = function(inputCity){
+
+//     let cityRegExp = /^[\w\.-_]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne! car avec "g" on peux accepter plusieurs email
+//     let testCity = cityRegExp.test(inputCity.value);
+//     let small = inputCity.nextElementSibling;
+
+//     if (testCity) {
+//         small.innerHTML = ''
+//     }
+//     else
+//         {small.innerHTML = 'Invalide'
+//     }
+//     return testCity
+//     }
+//     let CityFrom = document.getElementById("City")
+//     console.log(CityFrom)
+//     CityFrom.addEventListener('change', function(){
+//         validCity(this)
+//     });
+
+// //Validation de l'adresse
+
+// const validAddress = function(inputAddress){
+
+//     let addressRegExp = /^[\w\.-_]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
+//     let testAddress = addressRegExp.test(inputAddress.value);
+//     let small = inputAddress.nextElementSibling;
+
+//     if (testAddress) {
+//         small.innerHTML = ''
+//     }
+//     else
+//         {small.innerHTML = 'Addresse Invalide'
+//     }
+//     return testAddress
+//     }
+//     let addressFrom = document.getElementById("Address")
+//     console.log(addressFrom)
+//     addressFrom.addEventListener('change', function(){
+//         validAddress(this)
+//     });    
 
 
 // //envoi de data via le btn "commander"
@@ -85,55 +173,58 @@ deleteItem.forEach((btn) => {                                                   
 // let products = basketTab.map(basketObj => basketObj.id)
 
 
-let form = document.querySelector('.cart__order__form__question')
-form.addEventListener("click", function () {  
-    console.log("clique ok")            
-fetch("http://localhost:3000/api/order ", {
-    method: "POST",
-    body: JSON.stringify({
-        contact: {
-            firstName: document.getElementById("firstName").value,
-            lastName: document.getElementById("lastName").value,
-            address: document.getElementById("address").value,
-            city: document.getElementById("city").value,
-            email: document.getElementById("email").value
-        },
-        products: basketTab.map(basketObj => basketObj.id )
+let form = document.querySelector('.cart__order__form__submit')
+
+form.addEventListener("click", (e) => { 
+    e.preventDefault()                                                                                  // annule l'envenement par defaut du bouton (ici Submit)
+    console.log("clique ok")
+    if (!validEmail(emailFrom)){
+        return
+    }
+        
+    const contact = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        email: emailFrom.value
+    };
+
+    const products = [];
+
+    basketTab.forEach(elmnt => {
+        products.push(elmnt.id);
+    });
+
+    //console.log(products);
+
+    const dataUpload = {
+        contact,
+        products
+    };
+    // console.log(dataUpload)
+    
+    fetch((`http://localhost:3000/api/products/order`), {
+        method: "POST",                                                                         //envoie de données
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(dataUpload),
     })
-  .then (reponse => reponse.JSON())
+
+    .then(response => {
+        return response.json()
     })
-  })
 
-  .catch(function (erreur) {
-        console.log("erreur : " + erreur);
-        console.error(erreur);
-  })
-  
-// const validEmail = function(inputEmail){
+    .then((products) => {
+        console.log(products)
+        window.location.href = `confirmation.html?orderId=${products.orderId}`;  // si le back renvoie, il redirige vers confirmation?html avec la variable qui contiens le code du back
+        console.log(products)
+    })
 
-
-// const reg = /^aze[015]\d\w{2,}$/i;
-// let emailRegExp = /^[\w\.-_]+@[\w.-]+\.[a-z]{2,10}$/i; // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
-
-
-// let testEmail = emailRegExp.test(inputEmail.value);
-// let small = inputEmail.nextElementSibling;
-
-// if (testEmail) {
-//     small.innerHTML = 'Adresse mail Valide'
-// }
-// else
-//     {small.innerHTML = 'Adresse mail Invalide'
-// }
-// }
-
-
-
-// let emailFrom = document.querySelector("#email")
-// console.log(emailFrom)
-// form.email.addEventListener('change', function(){
-//     validEmail(this)
-// });
+    .catch(function (erreur) {
+        alert("erreur : " + erreur);
+    })
+}
+) 
 
 
 
