@@ -115,8 +115,11 @@ function contactIsValid() {
             let small = input.nextElementSibling;
             small.innerHTML = 'Veuillez completer le champ';
             isValid = false;
-        }
+        } 
+        else {let small = input.nextElementSibling;
+    small.innerHTML = 'Champ Valide';}
     }
+   
     return isValid;
 }
 
