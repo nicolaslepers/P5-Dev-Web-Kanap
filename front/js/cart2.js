@@ -134,9 +134,10 @@ function contactIsValid() {
             //au lieu de mettre un return qui stopera la boucle, une variable lancera la boucle à chaque fois que le bouton "commander" sera actionné
             isValid = false;
         } 
-        //sinon on met " champ valide"
-        else {let small = input.nextElementSibling;
-    small.innerHTML = 'Champ Valide';}
+        //sinon on met " champ valide" 
+        // else {let small = input.nextElementSibling;
+        //         small.innerText = 'Champ Valide';
+        //     }
     }
     return isValid;
 }
