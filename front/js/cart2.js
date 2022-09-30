@@ -46,12 +46,17 @@ function afficheBasketObj(basketObj) {
                 </div>
                 </div>
             </div>`;
-        document.getElementById("totalQuantity").innerText = totalAllQuantityProducts;                                                  // on met le total de la quantité de produits dans l'id "totalAllQuantityProducts"
-        document.getElementById("totalPrice").innerText = totalPriceAllProducts;        
+        // on met le total de la quantité de produits dans l'id "totalAllQuantityProducts"
+        document.getElementById("totalQuantity").innerText = totalAllQuantityProducts; 
+        //idem pour price                                                 
+        document.getElementById("totalPrice").innerText = totalPriceAllProducts;   
+        //recuperation de la class itemQuantity     
         const input = basketObjHtml.querySelector(".itemQuantity");
         input.addEventListener('change', function(event){
             console.log(basketTab, event)
+            //changement temporaire grace à tmp
             const tmp = basketTab.map(basketObj => {
+                //modification de la quantité grace à l'event
                 if(basketObj.id === event.target.id) {
                     basketObj.quantity = event.target.value;
                 }
@@ -59,14 +64,16 @@ function afficheBasketObj(basketObj) {
                 
             });
             localStorage.setItem("itemBasket", JSON.stringify(tmp));
+            //recharge de la page
             location.reload();
-        });                                              // on met le total des prix des produits dans l'id "totalPriceAllProducts"
+        });
 
         // Recuperer juste le deleteItem du basketObj en cours
         const btn = basketObjHtml.querySelector(".deleteItem")
         btn.addEventListener('click', e => {
-            localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != basketObj.color)));         //ici on retire un objet du tableau grace à sont ID
-            location.reload();                                                                                                           // ici on refraichit l'image
+            localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != basketObj.color)));
+            // ici on refraichit l'image
+            location.reload();                                                                                                           
         })
     })
     .catch(function (erreur) {
@@ -75,15 +82,16 @@ function afficheBasketObj(basketObj) {
     })
 }
 
-
-
 // Utilisation des Fonctions
-// 100 
-basketTab.forEach(basketObj => afficheBasketObj(basketObj))                                                                             // Il recupere tout les elements qui ont pour class "deleteItem"                                                                                                                     
+
+basketTab.forEach(basketObj => afficheBasketObj(basketObj))  
+// Il recupere tout les elements qui ont pour class "deleteItem"                                                                                                                                                                                                
 const deleteItem = document.querySelectorAll(".deleteItem")
-deleteItem.forEach((btn) => {                                                                                                            // pour chaque bouton deleteItem on lance la fonction
+// pour chaque bouton deleteItem on lance la fonction
+deleteItem.forEach((btn) => {                                                                                                            
     btn.addEventListener('click', e => {
-        localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != basketObj.color)));         //ici on retire un objet du tableau grace à sont ID
+        //ici on retire un objet du tableau grace à sont ID
+        localStorage.setItem("itemBasket", JSON.stringify(basketTab.filter(bObj => bObj.id != basketObj.id || bObj.color != basketObj.color)));         
                                                                                                                                          // (incohérence spec back) la couleur serait partie constituante dun uuid ? pourquoi on ne demande que les id dans le back dans ce cas ????
         location.reload();                                                                                                               // attention compatibilité avec d'anciennes version de nav// ici on refraichit l'image
     })
@@ -106,11 +114,7 @@ function validEmail() {
     }
     return testEmail;
 }
-// let emailFrom = document.getElementById("email");
-// console.log(emailFrom);
-// emailFrom.addEventListener('change', function(){
-//     validEmail(this);
-// });
+
 //creation de la fonction validation return "true" si valide return "false", "null", "undefined", "0",  "-1" "[]", "{}",... sinon
 function contactIsValid() {                              
     const inputs = document.querySelectorAll("input");
@@ -174,7 +178,7 @@ form.addEventListener("click", (e) => {
     
     //creation de la fonction fetch avec la methode "post" pour envoyer en version "string"(chaine de caractere) les données de dataUpload
     fetch((`http://localhost:3000/api/products/order`), {
-        method: "POST",                                                                         //envoie de données
+        method: "POST",
         headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(dataUpload),
     })
