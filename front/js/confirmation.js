@@ -2,9 +2,6 @@ let str = window.location;                                            //tu regar
 let url = new URL(str);
 let idCmd = url.searchParams.get("orderId"); 
 document.getElementById("orderId").innerText = idCmd
+console.log(idCmd)
 
-// function removeCache (){
-//     let cache = window.localStorage
-//     cache.clear()
-// }
-localStorage.removeItem()
+localStorage.removeItem('itemBasket')

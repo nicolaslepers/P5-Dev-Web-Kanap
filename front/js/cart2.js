@@ -31,7 +31,7 @@ function afficheBasketObj(basketObj) {                                          
                 <div class="cart__item__content__settings">
                 <div class="cart__item__content__settings__quantity">
                     <p>Qté : </p>
-                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${basketObj.quantity}">
+                    <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${basketObj.quantity}" id="${basketObj.id}">
                 </div>
                 <div class="cart__item__content__settings__delete">
                     <p class="deleteItem">Supprimer</p>
@@ -39,7 +39,20 @@ function afficheBasketObj(basketObj) {                                          
                 </div>
             </div>`;
         document.getElementById("totalQuantity").innerText = totalAllQuantityProducts;                                                  // on met le total de la quantité de produits dans l'id "totalAllQuantityProducts"
-        document.getElementById("totalPrice").innerText = totalPriceAllProducts;                                                        // on met le total des prix des produits dans l'id "totalPriceAllProducts"
+        document.getElementById("totalPrice").innerText = totalPriceAllProducts;        
+        const input = basketObjHtml.querySelector(".itemQuantity");
+        input.addEventListener('change', function(event){
+            console.log(basketTab, event)
+            const tmp = basketTab.map(basketObj => {
+                if(basketObj.id === event.target.id) {
+                    basketObj.quantity = event.target.value;
+                }
+                return basketObj;
+                
+            });
+            localStorage.setItem("itemBasket", JSON.stringify(tmp));
+            location.reload();
+        });                                              // on met le total des prix des produits dans l'id "totalPriceAllProducts"
 
         // Recuperer juste le deleteItem du basketObj en cours
         const btn = basketObjHtml.querySelector(".deleteItem")
@@ -68,29 +81,102 @@ deleteItem.forEach((btn) => {                                                   
     })
 })
 
-
 ///validation mail
 
-const validEmail = function(inputEmail){
-
-    let emailRegExp = /^[\w\.-_]+@[\w.-]+\.[a-z]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
+function validEmail() {
+    let inputEmail = document.getElementById('email')
+    // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
+    let emailRegExp = /^[\w\.-_]+@[\w.-]+\.[a-z]{2,10}$/i;
     let testEmail = emailRegExp.test(inputEmail.value);
     let small = inputEmail.nextElementSibling;
 
     if (testEmail) {
-        small.innerHTML = ''
+        small.innerHTML = '';
     }
     else
-        {small.innerHTML = 'Adresse mail Invalide'
+        {small.innerHTML = 'Adresse mail Invalide';
     }
-    return testEmail
+    return testEmail;
+}
+// let emailFrom = document.getElementById("email");
+// console.log(emailFrom);
+// emailFrom.addEventListener('change', function(){
+//     validEmail(this);
+// });
+//creation de la fonction validation return "true" si valide return "false", "null", "undefined", "0",  "-1" "[]", "{}",... sinon
+function contactIsValid() {                              
+    const inputs = document.querySelectorAll("input");
+    // creation de la variable small pour cibler l'element du dessous
+    console.log(inputs)
+    //lelection des inputs
+    let isValid = true;
+    for(let input of inputs) {
+        if(input.value.length === 0) {
+            let small = input.nextElementSibling;
+            small.innerHTML = 'Veuillez completer le champ';
+            isValid = false;
+        }
     }
-    let emailFrom = document.getElementById("email")
-    console.log(emailFrom)
-    emailFrom.addEventListener('change', function(){
-        validEmail(this)
+    return isValid;
+}
+
+
+let form = document.querySelector('.cart__order__form__submit')
+
+form.addEventListener("click", (e) => { 
+    e.preventDefault()                                                                                  // annule l'envenement par defaut du bouton (ici Submit)
+    console.log("clique ok")                            
+    if (!contactIsValid() || !validEmail()){
+// si !contactIsValid (con... n'est pas valide) n'execute pas la suite pareil pour !validEmail et au lieu de faire un ET tu fait un OU
+        return;
+    }
+    console.log('input.value.firstname.wtf', document.getElementById("firstName").value)
+
+
+    const contact = {
+        firstName: document.getElementById("firstName").value,
+        lastName: document.getElementById("lastName").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        email: document.getElementById("email").value,
+    };
+
+    const products = [];
+
+    basketTab.forEach(elmnt => {
+        products.push(elmnt.id);
     });
+ 
+    //console.log(products);
+
+    const dataUpload = {
+        contact,
+        products
+    };
+    // console.log(dataUpload)
     
+    fetch((`http://localhost:3000/api/products/order`), {
+        method: "POST",                                                                         //envoie de données
+        headers: { "Content-Type": "application/json; charset=utf-8" },
+        body: JSON.stringify(dataUpload),
+    })
+
+    .then(response => {
+        return response.json()
+    })
+
+    .then((products) => {
+        console.log(products)
+        window.location.href = `confirmation.html?orderId=${products.orderId}`;  // si le back renvoie, il redirige vers confirmation?html avec la variable qui contiens le code du back
+        console.log(products)
+    })
+
+    .catch(function (erreur) {
+        alert("erreur : " + erreur);
+    })
+}
+) 
+
 // // validation du nom et prenom
 
 // const validName = function(inputName){
@@ -173,88 +259,4 @@ const validEmail = function(inputEmail){
 // let products = basketTab.map(basketObj => basketObj.id)
 
 
-let form = document.querySelector('.cart__order__form__submit')
-
-form.addEventListener("click", (e) => { 
-    e.preventDefault()                                                                                  // annule l'envenement par defaut du bouton (ici Submit)
-    console.log("clique ok")
-    if (!validEmail(emailFrom)){
-        return
-    }
-        
-    const contact = {
-        firstName: document.getElementById("firstName").value,
-        lastName: document.getElementById("lastName").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        email: emailFrom.value
-    };
-
-    const products = [];
-
-    basketTab.forEach(elmnt => {
-        products.push(elmnt.id);
-    });
-
-    //console.log(products);
-
-    const dataUpload = {
-        contact,
-        products
-    };
-    // console.log(dataUpload)
-    
-    fetch((`http://localhost:3000/api/products/order`), {
-        method: "POST",                                                                         //envoie de données
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify(dataUpload),
-    })
-
-    .then(response => {
-        return response.json()
-    })
-
-    .then((products) => {
-        console.log(products)
-        window.location.href = `confirmation.html?orderId=${products.orderId}`;  // si le back renvoie, il redirige vers confirmation?html avec la variable qui contiens le code du back
-        console.log(products)
-    })
-
-    .catch(function (erreur) {
-        alert("erreur : " + erreur);
-    })
-}
-) 
-
-
-
-
-
-
-
-
-
-//recuperer le error msg pour y mettre le msg uniquement si c'est false
-
-
-
-//ou 
-
-// function checkEmail(email) {
-//     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return re.test(email);
-// }
-// function validate() {
-//     var email = document.getElementById("email").value;
-
-//     if (checkEmail(email)) {
-//         alert('Adresse e-mail valide');
-//     } else {
-//         alert('Adresse e-mail non valide');
-//     }
-//     return false;
-// }
-
-
-
-
+// const InputQuantity = 

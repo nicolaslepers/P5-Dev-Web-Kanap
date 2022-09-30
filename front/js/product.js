@@ -37,7 +37,12 @@ function displayProduct(produit) {                                    // MEP de 
     colors.appendChild(multiColors);  
   });
 }
-
+/**
+ * @description Method used to add an element to the basket as an global variable
+ * 
+ * @argument foo An argument of type number used to ....
+ * @returns void
+ */
 function addElementBasket() {     
   let chosenColor = document.getElementById("colors").value;            //attention queryselector bien mais getid meilleur ou different
   if (chosenColor == "--SVP, choisissez une couleur --") return;        // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
