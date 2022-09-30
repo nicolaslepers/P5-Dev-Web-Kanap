@@ -6,18 +6,26 @@ let totalPriceAllProducts = 0;                                                  
 let totalAllQuantityProducts = 0;                                                                                                   // idem pour la quantité de produits avec la variable let totalAllQuantityProducts = 0;
 
 // Integrer les données d'un canapé sur la page
-function afficheBasketObj(basketObj) {                                                                                            // Aller sur l'API chercher le reste des données de ce produit (name, price...)
+
+
+function afficheBasketObj(basketObj) {
+    // Aller sur l'API chercher le reste des données de ce produit (name, price...)
     apiRecup(`${url2}/${basketObj.id}`)
     .then(function (resteDonnees) {
-        let totalCurrentProduct = resteDonnees.price * basketObj.quantity;                                                          //multiplication du prix dans reste des données x la quantitée de produits
+        //multiplication du prix dans reste des données x la quantitée de produits
+        let totalCurrentProduct = resteDonnees.price * basketObj.quantity;                                                          
+        // Ajoute  la QUANTITE de ce produit au total de la quantité des produits
         totalAllQuantityProducts += basketObj.quantity                                      
-        console.log("totalCurrentProduct",totalCurrentProduct)                                                                      // Ajoute  la QUANTITE de ce produit au total de la quantité des produits
-        totalPriceAllProducts += totalCurrentProduct                                                                                // equivalent (raccourcis) ==> totalAllProducts = totalAllProducts + totalCurrentProduct Ajoute le prix total de ce produits au prix total de tout les produits 
+        console.log("totalCurrentProduct",totalCurrentProduct)                                                                      
+        // equivalent (raccourcis) ==> totalAllProducts = totalAllProducts + totalCurrentProduct Ajoute le prix total de ce produits au prix total de tout les produits 
+        totalPriceAllProducts += totalCurrentProduct 
+        //creation de la constante basketObjHtml avec creation de l'element article dans le Dom qui à pour attribut ... (voir en dessous)
         const basketObjHtml = document.createElement("article")
         basketObjHtml.setAttribute("class", "cart__item")
         basketObjHtml.setAttribute("data-id", basketObj.id)
         basketObjHtml.setAttribute("data-color", basketObj.color)
         document.getElementById("cart__items").appendChild(basketObjHtml)
+        //integration des données dans le DOM
         basketObjHtml.innerHTML = `
             <div class="cart__item__img">
                 <img src="${resteDonnees.imageUrl}" alt="Photographie d'un canapé">
@@ -108,18 +116,24 @@ function contactIsValid() {
     const inputs = document.querySelectorAll("input");
     // creation de la variable small pour cibler l'element du dessous
     console.log(inputs)
-    //lelection des inputs
+    //selection des inputs
+
+    //de base tout est valide (let isValid = true)
     let isValid = true;
+    //pour chaque input de la variable inputs
     for(let input of inputs) {
+        //si la taille du champ est strictement égale à 0 (rien) alors on exectute
         if(input.value.length === 0) {
+            //grace à "nextElementSibling" on selectionne l'element en dessous de input pour ce cas
             let small = input.nextElementSibling;
             small.innerHTML = 'Veuillez completer le champ';
+            //au lieu de mettre un return qui stopera la boucle, une variable lancera la boucle à chaque fois que le bouton "commander" sera actionné
             isValid = false;
         } 
+        //sinon on met " champ valide"
         else {let small = input.nextElementSibling;
     small.innerHTML = 'Champ Valide';}
     }
-   
     return isValid;
 }
 
@@ -127,15 +141,15 @@ function contactIsValid() {
 let form = document.querySelector('.cart__order__form__submit')
 
 form.addEventListener("click", (e) => { 
-    e.preventDefault()                                                                                  // annule l'envenement par defaut du bouton (ici Submit)
-    console.log("clique ok")                            
+    //pour evité que "required" fonctionne on le desactive avec "preventDefault()" (L'attribut booléen required, s'il est présent, indique que l'utilisateur doit spécifier une valeur pour l'entrée avant que le formulaire propriétaire puisse être soumis.)
+    e.preventDefault()                                                                               
+    console.log("clique ok")  
+    // si !contactIsValid (con... n'est pas valide) n'execute pas la suite pareil pour !validEmail et au lieu de faire un ET tu fait un OU
     if (!contactIsValid() || !validEmail()){
-// si !contactIsValid (con... n'est pas valide) n'execute pas la suite pareil pour !validEmail et au lieu de faire un ET tu fait un OU
         return;
     }
-    console.log('input.value.firstname.wtf', document.getElementById("firstName").value)
 
-
+    //recuperation des valeur de chaque id
     const contact = {
         firstName: document.getElementById("firstName").value,
         lastName: document.getElementById("lastName").value,
@@ -144,26 +158,27 @@ form.addEventListener("click", (e) => {
         email: document.getElementById("email").value,
     };
 
+    //creation de la constante tableau
     const products = [];
 
+    // !!!!!!!!!!
     basketTab.forEach(elmnt => {
         products.push(elmnt.id);
     });
- 
-    //console.log(products);
 
+    //creation de la constante avec à l'interieur les contacts et les produits
     const dataUpload = {
         contact,
         products
     };
-    // console.log(dataUpload)
     
+    //creation de la fonction fetch avec la methode "post" pour envoyer en version "string"(chaine de caractere) les données de dataUpload
     fetch((`http://localhost:3000/api/products/order`), {
         method: "POST",                                                                         //envoie de données
         headers: { "Content-Type": "application/json; charset=utf-8" },
         body: JSON.stringify(dataUpload),
     })
-
+    //demande de reponse en .JSON
     .then(response => {
         return response.json()
     })
@@ -174,92 +189,9 @@ form.addEventListener("click", (e) => {
         console.log(products)
     })
 
+    //en cas d'erreur utilisation de .catch pour l'affichage 
     .catch(function (erreur) {
         alert("erreur : " + erreur);
     })
 }
 ) 
-
-// // validation du nom et prenom
-
-// const validName = function(inputName){
-
-//     let NameRegExp = /^[\w\.-_]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
-//     let testName = NameRegExp.test(inputName.value);
-//     let small = inputName.nextElementSibling;
-
-//     if (testName) {
-//         small.innerHTML = ''
-//     }
-//     else
-//         {small.innerHTML = 'Invalide'
-//     }
-//     return testName
-//     }
-//     let NameFrom = document.getElementById("fistName")
-//     console.log(emailFrom)
-//     NameFrom.addEventListener('change', function(){
-//         validName(this)
-//     });
-
-
-// //validation de la ville
-
-// const validCity = function(inputCity){
-
-//     let cityRegExp = /^[\w\.-_]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne! car avec "g" on peux accepter plusieurs email
-//     let testCity = cityRegExp.test(inputCity.value);
-//     let small = inputCity.nextElementSibling;
-
-//     if (testCity) {
-//         small.innerHTML = ''
-//     }
-//     else
-//         {small.innerHTML = 'Invalide'
-//     }
-//     return testCity
-//     }
-//     let CityFrom = document.getElementById("City")
-//     console.log(CityFrom)
-//     CityFrom.addEventListener('change', function(){
-//         validCity(this)
-//     });
-
-// //Validation de l'adresse
-
-// const validAddress = function(inputAddress){
-
-//     let addressRegExp = /^[\w\.-_]{2,10}$/i;                     // "g" = plusieurs lignes, ne pas mettre "g" si une suele ligne!
-//     let testAddress = addressRegExp.test(inputAddress.value);
-//     let small = inputAddress.nextElementSibling;
-
-//     if (testAddress) {
-//         small.innerHTML = ''
-//     }
-//     else
-//         {small.innerHTML = 'Addresse Invalide'
-//     }
-//     return testAddress
-//     }
-//     let addressFrom = document.getElementById("Address")
-//     console.log(addressFrom)
-//     addressFrom.addEventListener('change', function(){
-//         validAddress(this)
-//     });    
-
-
-// //envoi de data via le btn "commander"
-// let contact = {                                                                                                                      // (bonne pratique) dans l'immediat je n'ai pas l'usage de le mettre dans une variable donc, bonne pratique je ne le fais pas. Quand j'en aurais besoin, je refléchis et là je le mettrais dans une variable. Merci de ne pas donner de mauvaises habitudes ;) 
-//     firstName: document.getElementById("firstName").value,
-//     lastName: document.getElementById("lastName").value,
-//     address: document.getElementById("address").value,
-//     city: document.getElementById("city").value,
-//     email: document.getElementById("email").value
-// }
-
-// console.log(contact)
-
-// let products = basketTab.map(basketObj => basketObj.id)
-
-
-// const InputQuantity = 
