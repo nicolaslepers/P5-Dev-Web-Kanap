@@ -37,35 +37,28 @@ function displayProduct(produit) {                                    // MEP de 
     colors.appendChild(multiColors);  
   });
 }
-/**
- * @description Method used to add an element to the basket as an global variable
- * 
- * @argument foo An argument of type number used to ....
- * @returns void
- */
 function addElementBasket() {     
   let chosenColor = document.getElementById("colors").value;   
   // chosenColor.setAttribute('min', "min")
   //attention queryselector bien mais getid meilleur ou different
 
-      if (chosenColor == "--SVP, choisissez une couleur --"){
-        alert ('Veuillez choisir la couleur de votre canapé')
-      }
-        // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
-      console.log("chosenColor", chosenColor);
-      if (document.getElementById("quantity").value <= 0){
-        alert ('Veuillez ajouter une valeur positive au nombre d\'article\(s\)')
-      }
-     
+      // if (chosenColor == "--SVP, choisissez une couleur --"){
+      //   alert ('Veuillez choisir la couleur de votre canapé')
+      // }
+      //   // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
+      // console.log("chosenColor", chosenColor);
+      // if (document.getElementById("quantity").value <= 0){
+      //   alert ('Veuillez ajouter une valeur positive au nombre d\'article\(s\)')
+      // }
       
   let quantity = parseInt(document.querySelector("#quantity").value);   //Recuperation de la quantité
-
 
 //Si dans le basketTab je rajouter un basketObj dont l'id et la couleur sont strictemement egal au basketObj deja existant alors j'additionne 
 console.log(basketTab)
   const existingObj = basketTab.find(basketObj => basketObj.id === idProduct && basketObj.color === chosenColor);
   if(existingObj) {
     existingObj.quantity += quantity;
+  
   } 
   else {
     basketTab.push({
@@ -80,21 +73,29 @@ console.log(basketTab)
 
 
 //Utilisation des Fonctions
-if(document.getElementById("quantity").value <= 0 && document.getElementById("colors").value == "--SVP, choisissez une couleur --"){
-  alert ('Il vous manque soit la couleur soit un nombre d\'article')
-}
-else
-  if (url.pathname == "/front/html/product.html") {
-    let sUrl = " http://localhost:3000/api/products";
-    apiRecup(`${sUrl}/${idProduct}`)
-      .then(function (produit) {
-        let click = document.querySelector("#addToCart");                   //Fonction Panier (basket)
-        click.addEventListener("click", function () {                       //appel  de la fonction addbasket (ajout au panier)
+
+
+if (url.pathname == "/front/html/product.html") {
+  let sUrl = " http://localhost:3000/api/products";
+  apiRecup(`${sUrl}/${idProduct}`)
+    .then(function (produit) {
+      let click = document.querySelector("#addToCart");                   //Fonction Panier (basket)
+      click.addEventListener("click", function () {  
+        if(document.getElementById("quantity").value <= 0 ) {
+        alert ('Il vous manque soit la couleur soit un nombre d\'article')
+        }
+        else if(document.getElementById("colors").value == "--SVP, choisissez une couleur --"){
+              alert ('Il vous manque soit la couleur soit un nombre d\'article')
+              }
+
+        else{
+          //appel  de la fonction addbasket (ajout au panier)
           addElementBasket();                                               //Appel de la fonction addarray qui est en dehors => (mauvaise pratique) quel est l'interet d'utiliser de la ressource en créant une fonction qui n'est utilisée qu'une seule fois dans l'integralité du code de l'application ???
-        });
-          displayProduct(produit);
-      })
-      .catch(function (erreur) {
-        console.log("erreur : " + erreur);
+        }
       });
-  }
+        displayProduct(produit);
+    })
+    .catch(function (erreur) {
+      console.log("erreur : " + erreur);
+    });
+}
