@@ -39,18 +39,6 @@ function displayProduct(produit) {                                    // MEP de 
 }
 function addElementBasket() {     
   let chosenColor = document.getElementById("colors").value;   
-  // chosenColor.setAttribute('min', "min")
-  //attention queryselector bien mais getid meilleur ou different
-
-      // if (chosenColor == "--SVP, choisissez une couleur --"){
-      //   alert ('Veuillez choisir la couleur de votre canapé')
-      // }
-      //   // la fonction return permet de ne pas lancer la fonction si un couleur n'est pas choisie
-      // console.log("chosenColor", chosenColor);
-      // if (document.getElementById("quantity").value <= 0){
-      //   alert ('Veuillez ajouter une valeur positive au nombre d\'article\(s\)')
-      // }
-      
   let quantity = parseInt(document.querySelector("#quantity").value);   //Recuperation de la quantité
 
 //Si dans le basketTab je rajouter un basketObj dont l'id et la couleur sont strictemement egal au basketObj deja existant alors j'additionne 
@@ -70,10 +58,7 @@ console.log(basketTab)
   localStorage.setItem("itemBasket", JSON.stringify(basketTab));         //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
 }
 
-
-
 //Utilisation des Fonctions
-
 
 if (url.pathname == "/front/html/product.html") {
   let sUrl = " http://localhost:3000/api/products";
