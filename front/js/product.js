@@ -54,6 +54,7 @@ console.log(basketTab)
       color: chosenColor,
       quantity,
       });
+      alert ('Canapé ajouté')
   }
   localStorage.setItem("itemBasket", JSON.stringify(basketTab));         //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
 }
@@ -66,12 +67,12 @@ if (url.pathname == "/front/html/product.html") {
     .then(function (produit) {
       let click = document.querySelector("#addToCart");                   //Fonction Panier (basket)
       click.addEventListener("click", function () {  
-        if(document.getElementById("quantity").value <= 0 ) {
-        alert ('Il vous manque soit la couleur soit un nombre d\'article')
-        }
-        else if(document.getElementById("colors").value == "--SVP, choisissez une couleur --"){
-              alert ('Il vous manque soit la couleur soit un nombre d\'article')
+        if(document.getElementById("colors").value == "--SVP, choisissez une couleur --"){
+              alert ('Il vous manque la couleur')
               }
+        else if(document.getElementById("quantity").value <= 0 ) {
+          alert ('Il vous manque un nombre d\'article')
+          }
 
         else{
           //appel  de la fonction addbasket (ajout au panier)
