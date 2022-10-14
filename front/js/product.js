@@ -1,21 +1,30 @@
-import { apiRecup } from "./script.js";                               //on oublie pas de mettre le module apres le (src => src="../js/product.js" type="module")
+//on oublie pas de mettre le module apres le (src => src="../js/product.js" type="module")
+import { apiRecup } from "./script.js";
 
 // Recuperation de l'id depuis l'url
-let str = window.location;                                            //tu regardes dans la barre de nav
+//tu regardes dans la barre de nav
+let str = window.location;                                            
 let url = new URL(str);
-let idProduct = url.searchParams.get("id");                           //et cherche les paramettres qu tu mets dans une variable
-export let basketTab = JSON.parse(localStorage.getItem("itemBasket")) || [];   // fait appel au local storage grace a quetitem et  est a l'exterieur donc utilisable facilement|| [] indique: si JSON.parse(localStorage.getItem("itemBasket")) il n'y a rien de dant alors on met juste []
+//et cherche les paramettres qu tu mets dans une variable
+let idProduct = url.searchParams.get("id");
+// fait appel au local storage grace a quetitem et est a l'exterieur donc utilisable facilement|| [] indique: si JSON.parse(localStorage.getItem("itemBasket")) il n'y a rien de dant alors on met juste []
+export let basketTab = JSON.parse(localStorage.getItem("itemBasket")) || [];
 
-//LES FONCTIONS
+/************************************************************ LES FONCTIONS ******************************************************/
 
 //Fonction changement
-function displayProduct(produit) {                                    // MEP de l'affichage et de la boucle
-  let img = document.createElement("img");                            //Creation de l'element img dans le DOM
-  let image = document.querySelector(".item__img").appendChild(img);  //creation de la variable image couplé à la class DOM
-  image.setAttribute("src", produit.imageUrl);                        //creation et attribution de l'element img avec sont attribut et sa source
-  image.setAttribute("alt", produit.altTxt);                          
+// MEP de l'affichage et de la boucle
+function displayProduct(produit) {   
+//Creation de l'element img dans le DOM
+  let img = document.createElement("img");  
+  //creation de la variable image couplé à la class DOM
+  let image = document.querySelector(".item__img").appendChild(img);
+  //creation et attribution de l'element img avec sont attribut et sa source
+  image.setAttribute("src", produit.imageUrl);  
+  image.setAttribute("alt", produit.altTxt);
 
-  let title = document.querySelector("#title");                       // recuperation du nom, prix et description du produit
+// recuperation du nom, prix et description du produit
+  let title = document.querySelector("#title");         
   title.innerHTML = produit.name;
   let price = document.querySelector("#price");
   price.innerHTML = produit.price;
@@ -23,50 +32,66 @@ function displayProduct(produit) {                                    // MEP de 
   desc.innerHTML = produit.description;
 
 //Option de base --SVP, choisissez une couleur --
-  let defaultSelection = document.createElement("option");             //creation de l'element option dans le DOM
-  defaultSelection.setAttribute("selected", "selected");               //attribution de "selected"
-  defaultSelection.innerHTML = "--SVP, choisissez une couleur --";     // insertion du texte "--SVP, choisissez une couleur --"
+  //creation de l'element option dans le DOM
+  let defaultSelection = document.createElement("option"); 
+  //attribution de "selected"
+  defaultSelection.setAttribute("selected", "selected");   
+  // insertion du texte "--SVP, choisissez une couleur --"
+  defaultSelection.innerHTML = "--SVP, choisissez une couleur --"; 
   let colors = document.querySelector("#colors");
   colors.appendChild(defaultSelection);
 
 //Loop(produit);
+//foreach better than for(let i = 0; i < produit.colors.length; i++) pour chaque produit.colors on utilise la fonction
   produit.colors.forEach(function (color) {
-    let multiColors = document.createElement("option");                 //foreach better than for(let i = 0; i < produit.colors.length; i++) pour chaque produit.colors on utilise la fonction
-    multiColors.setAttribute("value", color);                           // creation de la patie option 
-    multiColors.innerText = color;                                      // innterText prends une chaine de caractere et ne se comporte pas comme du html
+//creation de l'element option
+    let multiColors = document.createElement("option"); 
+// attribution de la couleur
+    multiColors.setAttribute("value", color);   
+// innterText prends une chaine de caractere et ne se comporte pas comme du html
+    multiColors.innerText = color;        
+//colors est l'enfant de multicolors
     colors.appendChild(multiColors);  
   });
 }
-function addElementBasket() {     
-  let chosenColor = document.getElementById("colors").value;   
-  let quantity = parseInt(document.querySelector("#quantity").value);   //Recuperation de la quantité
 
+
+
+//Ajout au panier
+function addElementBasket() {    
+//selection de l'ID colors et de sa valeur 
+  let chosenColor = document.getElementById("colors").value;
+//selection de l'ID Quantité et de sa valeur 
+  let quantity = parseInt(document.querySelector("#quantity").value); 
 //Si dans le basketTab je rajouter un basketObj dont l'id et la couleur sont strictemement egal au basketObj deja existant alors j'additionne 
 console.log(basketTab)
   const existingObj = basketTab.find(basketObj => basketObj.id === idProduct && basketObj.color === chosenColor);
   if(existingObj) {
+// si j'ai deux obj avec la meme coouleur et le meme ID alors je stak
     existingObj.quantity += quantity;
-  
   } 
   else {
+//version declarative
     basketTab.push({
-      id: idProduct,                                                       //version declarative
+      id: idProduct,
       color: chosenColor,
       quantity,
       });
       alert ('Canapé ajouté')
   }
-  localStorage.setItem("itemBasket", JSON.stringify(basketTab));         //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
+  //stock du texte donc doit etre serialiser et deserialiser () et stock grace a setitem
+  localStorage.setItem("itemBasket", JSON.stringify(basketTab));
 }
 
-//Utilisation des Fonctions
+/**************************************************** Utilisation des Fonctions *********************************************/
 
 if (url.pathname == "/front/html/product.html") {
   let sUrl = " http://localhost:3000/api/products";
   apiRecup(`${sUrl}/${idProduct}`)
     .then(function (produit) {
-      let click = document.querySelector("#addToCart");                   //Fonction Panier (basket)
-      click.addEventListener("click", function () {  
+      let click = document.querySelector("#addToCart");
+      click.addEventListener("click", function () {
+        //si il n'y a ni couleur et que le texte est "--SVP, choisissez une couleur --" alors alerte
         if(document.getElementById("colors").value == "--SVP, choisissez une couleur --"){
               alert ('Il vous manque la couleur')
               }
@@ -75,12 +100,14 @@ if (url.pathname == "/front/html/product.html") {
           }
 
         else{
-          //appel  de la fonction addbasket (ajout au panier)
-          addElementBasket();                                               //Appel de la fonction addarray qui est en dehors => (mauvaise pratique) quel est l'interet d'utiliser de la ressource en créant une fonction qui n'est utilisée qu'une seule fois dans l'integralité du code de l'application ???
+          //sinon appel  de la fonction addbasket (ajout au panier)
+          addElementBasket();
         }
       });
+      //affichage
         displayProduct(produit);
     })
+    //en cas d'erreur
     .catch(function (erreur) {
       console.log("erreur : " + erreur);
     });

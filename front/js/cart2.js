@@ -196,7 +196,6 @@ form.addEventListener("click", (e) => {
     //creation de la constante tableau
     const products = [];
 
-    // !!!!!!!!!!
     basketTab.forEach((elmnt) => {
       products.push(elmnt.id);
     });
@@ -220,11 +219,12 @@ form.addEventListener("click", (e) => {
 
       .then((products) => {
         console.log(products);
-        window.location.href = `confirmation.html?orderId=${products.orderId}`; // si le back renvoie, il redirige vers confirmation?html avec la variable qui contiens le code du back
+        // si le back renvoie, il redirige vers confirmation?html avec la variable qui contiens le code du back
+        window.location.href = `confirmation.html?orderId=${products.orderId}`; 
         console.log(products);
       })
 
-      //en cas d'erreur utilisation de .catch pour l'affichage
+      //en cas d'erreur
       .catch(function (erreur) {
         alert("erreur : " + erreur);
       });
