@@ -12,7 +12,7 @@ export let basketTab = JSON.parse(localStorage.getItem("itemBasket")) || [];
 
 /************************************************************ LES FONCTIONS ******************************************************/
 
-//Fonction changement
+//Fonction chargement
 // MEP de l'affichage et de la boucle
 function displayProduct(produit) {   
 //Creation de l'element img dans le DOM

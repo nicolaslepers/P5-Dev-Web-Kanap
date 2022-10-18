@@ -1,10 +1,15 @@
 export { apiRecup };
+
+
+
+
+/******************************************************************** fonction  ****************************************************/
 function apiRecup(urlApi) {
   return fetch(urlApi).then(function (response) {
     return response.json();
   });
 }
-/******************************************************************** fonction affichage ****************************************************/
+
 
 //recuperation de la data dans L'API
 function affchProd(dataProduits) {

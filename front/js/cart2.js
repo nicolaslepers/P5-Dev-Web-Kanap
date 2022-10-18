@@ -5,6 +5,15 @@ let url2 = " http://localhost:3000/api/products";
 let totalPriceAllProducts = 0; // au debut creation de la variable let totalPriceAllProducts qui n'a rien (= 0 )
 let totalAllQuantityProducts = 0; // idem pour la quantité de produits avec la variable let totalAllQuantityProducts = 0;
 
+
+
+
+
+
+
+/***************************************************Fonction ***********************************************/
+
+
 // Integrer les données d'un canapé sur la page
 
 function afficheBasketObj(basketObj) {
@@ -73,7 +82,7 @@ function afficheBasketObj(basketObj) {
         location.reload();
       });
 
-      //
+/*******************************************  Utilisation des Fonctions ************************************/
 
       // Recuperer juste le deleteItem du basketObj en cours
       const btn = basketObjHtml.querySelector(".deleteItem");
@@ -96,8 +105,6 @@ function afficheBasketObj(basketObj) {
     });
 }
 
-// Utilisation des Fonctions
-
 basketTab
   .sort(function compare(a, b) {
     if (a.id < b.id) return -1;
@@ -111,7 +118,7 @@ const deleteItem = document.querySelectorAll(".deleteItem");
 // pour chaque bouton deleteItem on lance la fonction
 deleteItem.forEach((btn) => {
   btn.addEventListener("click", (e) => {
-    //ici on retire un objet du tableau grace à sont ID
+    //ici on retire un objet du tableau grace à sont ID et sa couleur
     localStorage.setItem(
       "itemBasket",
       JSON.stringify(
@@ -157,7 +164,8 @@ function contactIsValid() {
       if (input.value.length === 0) {
         small.innerHTML = "Veuillez completer le champ";
       }
-    } else {
+      else {small.innerHTML = ""}}
+    else {
       //si la taille du champ est strictement égale à 0 (rien) ou que le test est bon, alors on exectute
       if (!/^[a-zA-Z\s]+$/.test(input.value)) {
         //grace à "nextElementSibling" on selectionne l'element en dessous de input pour ce cas
